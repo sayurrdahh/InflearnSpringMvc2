@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+페이지 소스보기
+<!-- 자바스크립트 인라인 사용 전
+ userA를 찾을 수 없다고 뜸-->
+<script>
+ //var username = [[${user.username}]];
+ var age = [[${user.age}]];
+
+ //자바스크립트 내추럴 템플릿
+ var username2 = /*[[${user.username}]]*/ "test username";
+
+ //객체 - 에러남 ( BasicController.User(username=userA, age=10)이런식으로 뜸)
+ //var user = [[${user}]];
+</script>
+<!-- 자바스크립트 인라인 사용 후 -->
+<script th:inline="javascript">
+ var username = [[${user.username}]];
+ //var username = "userA";
+
+ var age = [[${user.age}]];
+
+ //자바스크립트 내추럴 템플릿
+ var username2 = /*[[${user.username}]]*/ "test username";
+ //var username2 = "userA";
+
+ //객체 : json 형식으로 파싱되어서 옴
+ var user = [[${user}]];
+ //결과 : var user = {"username":"userA","age":10};
+</script>
+
+<script th:inline="javascript">
+  [# th:each="user, stat : ${users}"]
+  var user[[${stat.count}]] = [[${user}]];
+  [/]
+</script>
+</body>
+</html>
